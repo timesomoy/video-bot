@@ -124,6 +124,10 @@ def run_payload(payload, send=True):
     av.load_env()
     opts = dict(payload.get("options") or {})
     started = time.time()
+    if payload.get("chat_id") and not os.environ.get("TELEGRAM_BOT_TOKEN"):
+        # without the token nothing can be delivered: fail loudly instead of building a video that is thrown away
+        print("JOB FAILED: TELEGRAM_BOT_TOKEN is empty - add it as a GitHub *secret* (Settings > Secrets and variables > Actions > Secrets).")
+        return False
     with Sandbox() as sb:
         av.OUT = sb.dir / "out"
         av.WORK = av.OUT / "_work"
