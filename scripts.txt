@@ -1,0 +1,11 @@
+Video: Remove a Photo Background for Free
+Title: Erase Backgrounds Instantly
+Tag: Free online tools
+
+Open https://www.xunl.net/tools/en/image-editor/ || Need to remove a photo background but don't have Photoshop? This free browser tool works without an account.
+Click Try Samples || No need to upload anything yet. Let's load a sample image and test the editor immediately.
+Wait || The sample appears on the canvas, ready for editing. Your image stays inside your browser.
+Scroll down || Find the AI cutout section. It can automatically detect the main subject and separate it from the background.
+Click One-click cutout || Now the editor processes the sample with its local AI model and creates a removable background mask.
+Wait || The cutout appears on the canvas. You can refine the edges if the automatic selection misses anything.
+|| Save the result as a transparent image and create clean product photos without paying for editing software.

@@ -1,0 +1,71 @@
+NOTE: this is the old v4 note for running the bot on your own PC. The free 24/7 setup with Telegram + Cloudflare + GitHub Actions is in SETUP.md.
+
+SETUP GUIDE: voice, AI editor, Telegram bot, GitHub storage
+===========================================================
+Do only the parts you want. Everything else keeps working without them.
+
+PART A - THE VOICE (do once)
+  1. Measure your reference video's voice:
+        python autovideo.py voice-profile web_video_1_1.mp4
+  2. Let the script pick the closest voices (needs internet, 1-2 minutes):
+        python autovideo.py voice-lab
+     It speaks the same sentence with 9 male and 8 female voices, measures each one against the reference, and saves
+     the best male and best female voice (with a rate and pitch nudge) to voice_profile.json.
+     LISTEN to  output\voice_lab\BEST_male.mp3  and  BEST_female.mp3.
+     Too fast or slow? Change VOICE_RATE near the top of autovideo.py (for example "+0%" or "+12%").
+  3. Choosing male or female for a video:
+        python autovideo.py queue --female          (every video in this run)
+        a line  Voice: female  inside a script       (only that video)
+        /voice female  in the Telegram topic         (the next videos from the bot)
+     Default is male (DEFAULT_GENDER at the top of autovideo.py).
+  Honest limit: this matches the pitch, pace and energy of the reference. It does not clone the person's real voice.
+
+PART B - AI SCRIPT EDITOR (optional, needs your own API key)
+  What it does: after the page scout, an AI polishes the narration (punchy, brisk, strong hook) and checks every action
+  against what the pages really contain today. If it fails or you have no key, the built-in planner is used.
+  1. Copy .env.example to .env and fill the three lines:
+        AUTOVIDEO_AI_PROVIDER=openai          (works for OpenAI and for any "OpenAI-compatible" service)
+        AUTOVIDEO_AI_KEY=your key
+        AUTOVIDEO_AI_BASE=                    (empty = OpenAI; for others paste the provider's base URL)
+        AUTOVIDEO_AI_MODEL=                   (empty = a small default; model names change, copy a current one)
+     Using Claude:  AUTOVIDEO_AI_PROVIDER=anthropic  and your Anthropic key.
+     Free tiers exist at some providers (for example Google AI Studio or Groq): create a key there, then use the
+     base URL and model name from their "OpenAI compatibility" documentation page.
+  2. Nothing else to do: python autovideo.py queue  (or the bot) now uses it automatically.
+
+PART C - TELEGRAM BOT
+  1. In Telegram open @BotFather, send /newbot, choose a name, copy the TOKEN it gives you.
+  2. Still in @BotFather: /setprivacy -> choose your bot -> Disable   (so the bot can read messages in a group).
+  3. Create a group. Group settings -> Topics -> turn on. Create a topic, for example "Scripts".
+     Add your bot to the group. (If you changed privacy AFTER adding it, remove the bot and add it again.)
+  4. Copy .env.example to .env and set  TELEGRAM_BOT_TOKEN=  (your token).
+  5. Run:   python autovideo.py bot-setup
+     In the topic, send:  /id     -> the bot replies with the chat id, topic id and YOUR user id. Press Ctrl+C.
+  6. Fill .env:
+        TELEGRAM_CHAT_ID=-100xxxxxxxxxx
+        TELEGRAM_TOPIC_ID=the topic id (leave empty if the group has no topics)
+        TELEGRAM_ALLOWED_USERS=your user id   (add other people's ids separated by commas)
+     Only these people can make the PC record. Anyone else gets "not allowed".
+  7. Run:   python autovideo.py bot          (add --female for the female voice)
+     Keep that window open, the PC on, signed in and awake.
+  8. Paste a script in the topic. The bot replies "Queued", warns you, waits 15 seconds, then takes over the mouse.
+     Do not use the PC while it records. When finished the videos and the transcript come back into the same topic.
+     Several scripts in one message: separate them with a line containing only ---
+     Commands: /help  /status  /voice male|female  /id
+  Safety: scripts make the PC open websites in a throw-away browser. Only put people you trust in TELEGRAM_ALLOWED_USERS.
+
+PART D - GITHUB STORAGE (free archive)
+  Why GitHub Releases: each file may be up to 2 GiB, up to 1000 files per release, and there is no limit on the total size
+  or bandwidth. (Normal repository files are blocked above 100 MiB, so videos go in Releases, not in the code.)
+  1. Create a repository (Public gives links anyone can open; Private needs a GitHub login to download).
+     Tick "Add a README" so the repository is not empty.
+  2. GitHub -> your profile picture -> Settings -> Developer settings -> Personal access tokens -> Fine-grained tokens
+     -> Generate new token. Repository access: Only select repositories -> your repo.
+     Permissions -> Repository permissions -> Contents: Read and write.  Generate and copy the token.
+  3. In .env:
+        GITHUB_TOKEN=the token
+        GITHUB_REPO=your-name/your-repo
+  4. That is all. After each video the bot uploads the files to the release "videos-YYYY-MM" and posts the links.
+  Telegram is the main delivery (files up to 50 MB are sent back directly; bigger ones are shrunk automatically).
+
+FILES YOU NEVER SHARE:  .env  (tokens and keys)

@@ -1,0 +1,18 @@
+{
+ "male": {
+  "voice": "en-US-GuyNeural",
+  "rate": "+7%",
+  "pitch": "+9Hz"
+ },
+ "female": {
+  "voice": "en-US-AvaMultilingualNeural",
+  "rate": "-4%",
+  "pitch": "+0Hz"
+ },
+ "reference": {
+  "f0_median": 175.8,
+  "f0_p25": 145.5,
+  "f0_p75": 219.2,
+  "rate": 8.77
+ }
+}

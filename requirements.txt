@@ -1,0 +1,7 @@
+playwright>=1.45        # only used to READ page positions / button names (the browser is your real Chrome/Chromium)
+edge-tts>=6.1           # the AI voice (online service, no key)
+numpy
+opencv-python-headless  # on a Windows desktop you may use opencv-python instead
+pillow
+cryptography            # decrypts the job payload sent by the Telegram front end
+pyautogui; sys_platform == "win32"   # Windows only: real mouse/keyboard (Linux uses xinput_linux.py, no package needed)

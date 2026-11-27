@@ -1,0 +1,40 @@
+You are planning a narrated screen-demo video. A robot will use a REAL browser with a REAL mouse and keyboard,
+like a person would. Read the BRIEF below and produce ONE JSON object and nothing else, exactly in this shape:
+
+{
+  "title": "short title",
+  "voice": "",
+  "scenes": [
+    { "say": "1-2 sentence narration for this scene (max 25 words)",
+      "do": [ {"goto": "https://example.com"}, {"scroll": 800}, {"click": "visible link or button text"} ] }
+  ]
+}
+
+Allowed actions inside "do":
+  {"goto": "<full url>"}                          typed into the address bar and Enter (like a person)
+  {"click": "<visible text>"}                     move the pointer to it and click
+  {"hover": "<visible text>"}                     move the pointer onto it
+  {"type": ["<placeholder or label>", "<text>"]}  click an input and type
+  {"press": "enter"}                              press a key (enter, tab, esc, down, up, pagedown ...)
+  {"scroll": <pixels>}                            mouse-wheel scroll, positive = down, negative = up
+  {"wait": <seconds>}
+
+Rules:
+- The narration must describe what is on screen during that scene, in the same order as the actions.
+- At most 4 actions per scene. Use the exact visible text from PAGE HINTS when available.
+- Do not invent buttons that are not in PAGE HINTS. If a cookie banner is likely, add a click for its Accept button.
+- Narration language = the language of the BRIEF. Leave "voice" empty unless the brief names one.
+- Save the JSON to a file named plan.json in the current folder. Output nothing else.
+
+BRIEF:
+Video: "What Napkin AI does"
+Open https://www.napkin.ai and show the homepage.
+Scroll down slowly through the three steps: paste text, click to generate visuals, polish it.
+Keep going to the user testimonials.
+End with one friendly line telling people to try it free.
+Tone: friendly, short sentences, English.
+
+
+PAGE HINTS:
+https://www.napkin.ai
+  Get Napkin Free | Product | Pricing | Blog | About us | Sign in | here | © 2026 Napkin AI | How it works | Use Cases | Help Center | Careers | Customers | Compare | Contact Us | Terms and Conditions | Privacy Policy | AI Transparency | Trust Center | LinkedIn | X | YouTube | Instagram | TikTok

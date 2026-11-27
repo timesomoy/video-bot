@@ -1,0 +1,19 @@
+name = "videobot"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "videobot"
+database_id = "PASTE-THE-ID-FROM-wrangler-d1-create"
+
+[vars]
+GITHUB_REPO = "YOUR-GITHUB-USER/video-bot"     # owner/name of the repo that holds .github/workflows/make-video.yml
+GITHUB_REF = "main"
+WORKFLOW_FILE = "make-video.yml"
+ADMIN_IDS = "123456789"                        # your Telegram numeric id (comma separated for several admins)
+DEFAULT_LIMIT = "3"                            # videos per member per day
+MAX_ACTIVE = "4"                               # videos building at the same time (all members together)
+
+# Secrets (never put these in this file):  wrangler secret put TELEGRAM_BOT_TOKEN | WEBHOOK_SECRET | DONE_SECRET
+#                                          wrangler secret put GITHUB_TOKEN | PAYLOAD_KEY | SETUP_KEY
