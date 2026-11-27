@@ -217,8 +217,10 @@ def cmd_job(path, encrypted=False):
     if payload.get("uid") and os.environ.get("DONE_URL") and os.environ.get("DONE_SECRET"):
         try:                                                # tell the front end this member's job is over (frees their slot)
             req = urllib.request.Request(os.environ["DONE_URL"], data=json.dumps({"uid": payload["uid"]}).encode(), method="POST",
-                                         headers={"content-type": "application/json", "x-done-secret": os.environ["DONE_SECRET"]})
+                                         headers={"content-type": "application/json", "x-done-secret": os.environ["DONE_SECRET"],
+                                                  "user-agent": "videobot-runner/1.0 (+github-actions)"})   # Python's default UA is often blocked by Cloudflare (error 1010)
             urllib.request.urlopen(req, timeout=20).read()
-        except Exception:
-            pass
+            print("  (told the front end this job is over)")
+        except Exception as e:
+            print(f"  ! could not call DONE_URL: {redact(e)[:160]} (the front end frees the slot by itself after a minute or two)")
     sys.exit(0 if ok else 1)
